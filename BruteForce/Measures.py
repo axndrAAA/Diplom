@@ -45,3 +45,10 @@ def getDzitta_qkl(q,k,l):
 
 def getD_qk(q,k):
     return m.sqrt(m.pow((ic.X_q[q].x - ic.X_k[k].x),2) + m.pow((ic.X_q[q].y - ic.X_k[k].y),2))
+
+def checkDistances(l,q,k):
+    d_kq = m.sqrt(m.pow(ic.X_k[k].x - ic.X_q[q].x, 2)+m.pow(ic.X_k[k].y - ic.X_q[q].y, 2))
+    if(d_kq > ic.R_l[l]):
+        return False
+    else:
+        return True

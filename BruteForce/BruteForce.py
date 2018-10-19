@@ -14,7 +14,11 @@ for l in range(ic.L):
         for q in range(ic.Q):
             #формирование очередного вида матрицы
             for i in range(ic.A_ql[q,l]):
-                X_lkq[l,k,q] = i
+                #проверка выполнения ограничения по дальности
+                if(criteria.checkDistances(l,q,k)):
+                    X_lkq[l, k, q] = i
+                else:
+                    X_lkq[l, k, q] = 0
                 #вычисление значения критерия
                 J = criteria.J(X_lkq)
                 if (J > J_max):
