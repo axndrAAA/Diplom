@@ -1,8 +1,7 @@
 # Попытка решения задачи простым перебором
-
 import numpy as np
-import BruteForce.InitialConditions as ic
-import BruteForce.Measures as criteria
+import InitialConditions as ic
+import Measures as criteria
 
 X_lkq = np.zeros((ic.L,ic.K,ic.Q))
 

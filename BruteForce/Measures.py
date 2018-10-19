@@ -1,4 +1,4 @@
-import BruteForce.InitialConditions as ic
+import InitialConditions as ic
 import math as m
 
 
