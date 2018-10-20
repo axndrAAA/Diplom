@@ -2,6 +2,7 @@
 import numpy as np
 import InitialConditions as ic
 import Measures as criteria
+from Permutations import Permutation
 
 X_lkq = np.zeros((ic.L,ic.K,ic.Q))
 
@@ -21,10 +22,14 @@ for l in range(ic.L):
                 #вычисление значения критерия
                 J = criteria.J(X_lkq)
                 if (J > J_max):
-                    J = J_max
+                    J_max = J
                     X_lkq_optimal = X_lkq
                 else:
                     continue
 print("Значение критерия J = %f. Оптимальная матрица целераспределения:" % J_max)
 
 print(X_lkq_optimal)
+for i in range(ic.Q):
+    print("Аэродром № " + str(i))
+    print(np.array(X_lkq_optimal[:,:,i]).transpose())
+    print("\n")

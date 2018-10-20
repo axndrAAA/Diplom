@@ -35,7 +35,7 @@ def J3(x_lkq):
     return sum
 
 def J(x_lkq):
-    return ic.alpha[0]*J1(x_lkq) - ic.alpha[1]*J2(x_lkq) + ic.alpha[2]*J3(x_lkq)
+    return ic.alpha[0]*J1(x_lkq)# - ic.alpha[1]*J2(x_lkq) + ic.alpha[2]*J3(x_lkq)
 
 def getDzitta_qkl(q,k,l):
     d_qk = getD_qk(q,k)
