@@ -10,6 +10,7 @@ J_max = 0
 X_lkq_optimal = np.zeros((ic.L,ic.K,ic.Q))
 
 # Формируем возможные комбинации для каждого из аэродромов
+lim = ic.Q
 prmts_ql = []
 for q in range(ic.Q):
     mq = []
@@ -20,13 +21,14 @@ for q in range(ic.Q):
     prmts_ql.append(mq)
 
 
-#для 3 типов 4 кластеров и одного аэродрома
-    for l1 in range(len(prmts_ql[1])):
-        X_lkq[1, :, 1] = prmts_ql[1, l1]
-        for l2 in range(len(prmts_ql[2])):
-            X_lkq[2, :, 1] = prmts_ql[2, l2]
-            for l3 in range(len(prmts_ql[3])):
-                X_lkq[3, :, 1] = prmts_ql[3, l3]
+# #для 3 типов 4 кластеров и одного аэродрома
+for q in range(ic.Q):
+    for l1 in range(len(prmts_ql[q][0])):
+        X_lkq[0, :, 1] = prmts_ql[q][0][l1]
+        for l2 in range(len(prmts_ql[q][1])):
+            X_lkq[1, :, 1] = prmts_ql[q][1][l2]
+            for l3 in range(len(prmts_ql[q][2])):
+                X_lkq[2, :, q] = prmts_ql[q][2][l3]
 
 # попытка автоматизировать перебор по типам
 # lx = np.zeros([ic.L])
