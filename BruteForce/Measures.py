@@ -52,3 +52,13 @@ def checkDistances(l,q,k):
         return False
     else:
         return True
+
+def checkDistances(x_lkq):
+    for l in range(ic.L):
+        for k in range(ic.K):
+            for q in range(ic.Q):
+                if(x_lkq[l,k,q] > 0):
+                    d_kq = m.sqrt(m.pow(ic.X_k[k].x - ic.X_q[q].x, 2) + m.pow(ic.X_k[k].y - ic.X_q[q].y, 2))
+                    if (d_kq > ic.R_l[l]):
+                        return False
+    return True
