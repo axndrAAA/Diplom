@@ -20,8 +20,11 @@ def J2(x_lkq):
         for l in range(ic.L):
             for q in range(ic.Q):
                 d_sum += ic.p_l[l] * ic.r_lk[l,k]*x_lkq[l,k,q]/ic.p_l.max()
-
-    return d_sum/x_lkq.sum()
+    sm = x_lkq.sum()
+    if (sm > 0):
+        return d_sum/sm
+    else:
+        return d_sum
 
 
 def J3(x_lkq):
@@ -31,11 +34,17 @@ def J3(x_lkq):
             for q in range(ic.Q):
                 sum += x_lkq[l,k,q]*getDzitta_qkl(q,k,l)/(ic.T_k[k].t_max - ic.T_k[k].t_min)
 
-    sum /= x_lkq.sum()
-    return sum
+    sm = x_lkq.sum()
+    if (sm > 0):
+        return sum / sm
+    else:
+        return sum
 
 def J(x_lkq):
-    return ic.alpha[0]*J1(x_lkq)# - ic.alpha[1]*J2(x_lkq) + ic.alpha[2]*J3(x_lkq)
+    # return ic.alpha[0] * J1(x_lkq)
+    # return ic.alpha[1] * J2(x_lkq)
+    # return  ic.alpha[2]*J3(x_lkq)
+    return ic.alpha[0]*J1(x_lkq) - ic.alpha[1]*J2(x_lkq) + ic.alpha[2]*J3(x_lkq)
 
 def getDzitta_qkl(q,k,l):
     d_qk = getD_qk(q,k)

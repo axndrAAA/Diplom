@@ -4,9 +4,15 @@ import InitialConditions as ic
 import Measures as criteria
 from Permutations import Permutation
 
+def printmatrix(x_lkq):
+    for i in range(ic.Q):
+        print("Аэродром № " + str(i))
+        print(np.array(x_lkq[:, :, i]).transpose())
+        print("\n")
+
 X_lkq = np.zeros((ic.L,ic.K,ic.Q))
 
-J_max = 0
+J_max = -1000
 X_lkq_optimal = np.zeros((ic.L,ic.K,ic.Q))
 
 # Формируем возможные комбинации для каждого из аэродромов
@@ -31,11 +37,11 @@ for q in range(ic.Q):
                 X_lkq[2, :, q] = prmts_ql[q][2][l3]
                 cnt += 1
                 # проверка выполнения ограничения по дальности
-                if(not criteria.checkDistances(X_lkq)):
+                if not criteria.checkDistances(X_lkq):
                     continue
-                #вычисление значения критерия
+                # вычисление значения критерия
                 J = criteria.J(X_lkq)
-                if (J > J_max):
+                if J > J_max:
                     J_max = J
                     X_lkq_optimal = X_lkq.copy()
                 else:
@@ -43,8 +49,7 @@ for q in range(ic.Q):
 
 print("Значение критерия J = %f. Оптимальная матрица целераспределения:" % J_max)
 
-#print(X_lkq_optimal)
-for i in range(ic.Q):
-    print("Аэродром № " + str(i))
-    print(np.array(X_lkq_optimal[:,:,i]).transpose())
-    print("\n")
+printmatrix(X_lkq_optimal)
+
+
+
