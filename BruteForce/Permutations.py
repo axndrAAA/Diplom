@@ -9,6 +9,7 @@ class Permutation:
         parameter =''
         for i in range(Sum):
             parameter += str(i)
+        parameter += str(Sum)
         self.lst = list(it.combinations_with_replacement(parameter, size))
 
     def getNext(self):
@@ -31,3 +32,5 @@ class Permutation:
             if(arr.sum() <= self.sum_condition):
                 ret.append(arr)
         return ret
+
+
