@@ -3,8 +3,9 @@ class TimeGap:
     t_max = 0
 
     def __init__(self, _timn, _tmax):
-        self.t_min = _timn * 60
-        self.t_max = _tmax * 60
+        #хранится в секундах
+        self.t_min = _timn
+        self.t_max = _tmax
 
 class VelGap:
     v_min = 0
@@ -17,6 +18,7 @@ class Point:
     x = 0
     y = 0
     def __init__(self, _x, _y):
-        self.x = _x
-        self.y = _y
+        # передается в километрах, хранится и используется в метрах
+        self.x = _x * 1000.0
+        self.y = _y * 1000.0
 
