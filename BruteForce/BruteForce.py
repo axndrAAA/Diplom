@@ -30,11 +30,13 @@ cnt = 0
 # #для 3 типов 4 кластеров и одного аэродрома
 for q in range(ic.Q):
     for l1 in range(len(prmts_ql[q][0])):
-        X_lkq[0, :, 1] = prmts_ql[q][0][l1]
+        X_lkq[0, :, q] = prmts_ql[q][0][l1]
         for l2 in range(len(prmts_ql[q][1])):
-            X_lkq[1, :, 1] = prmts_ql[q][1][l2]
+            X_lkq[1, :, q] = prmts_ql[q][1][l2]
             for l3 in range(len(prmts_ql[q][2])):
                 X_lkq[2, :, q] = prmts_ql[q][2][l3]
+                if cnt == 10456:
+                    cnt = cnt
                 cnt += 1
                 # проверка выполнения ограничения по дальности
                 if not criteria.checkDistances(X_lkq):
