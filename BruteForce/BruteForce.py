@@ -18,13 +18,19 @@ X_lkq_optimal = np.zeros((ic.L,ic.K,ic.Q))
 # Формируем возможные комбинации для каждого из аэродромов
 lim = ic.Q
 prmts_ql = []
+max_prmts_count = 0
 for q in range(ic.Q):
     mq = []
+    a = 1
     for l in range(ic.L):
-        p = Permutation(ic.K,ic.A_ql[q,l])
+        p = Permutation(ic.K, ic.A_ql[q, l])
         m = p.getAll()
+        a *= len(m)
         mq.append(m)
+    max_prmts_count += a
     prmts_ql.append(mq)
+
+print('Макс. число перестановок: ' + str(max_prmts_count))
 
 cnt = 0
 # #для 3 типов 4 кластеров и одного аэродрома
@@ -46,6 +52,7 @@ for q in range(ic.Q):
                 if J > J_max:
                     J_max = J
                     X_lkq_optimal = X_lkq.copy()
+                    print('count = ' + str(cnt))
                 else:
                     continue
 
