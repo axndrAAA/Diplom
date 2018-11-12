@@ -13,22 +13,27 @@ def print_matrix(x_lkq):
 
 
 def l_boost(l, n, nl_indexes, prmts_ql, x_lkq, opt_def):
-    l += 1
+    #  условие выхода
+    if nl_indexes[0] == len(prmts_ql[0][0]) - 1:
+        return
+
     if l == ic.L - 1:
         #  дошли до края l измерения
         for nl_indexes[l] in range(len(prmts_ql[0][l])):
             X_lkq[l, :, 0] = prmts_ql[0][l][nl_indexes[l]]
             opt_def.checkMatrix(x_lkq)
-        l = l - l
+        l -= 1
         l_boost(l, n, nl_indexes, prmts_ql, x_lkq, opt_def)
     else:
         if nl_indexes[l] < len(prmts_ql[0][l]):
             X_lkq[l, :, 0] = prmts_ql[0][l][nl_indexes[l]]
             nl_indexes[l] += 1
+            l += 1
             l_boost(l, n, nl_indexes, prmts_ql, x_lkq, opt_def)
-    #  условие выхода
-    if nl_indexes[0] == len(prmts_ql[0][0]) - 1:
-        return
+        else:
+            l -= 1
+            l_boost(l, n, nl_indexes, prmts_ql, x_lkq, opt_def)
+
 
 
 J_max = -1000
@@ -53,8 +58,8 @@ print('Макс. число перестановок: ' + str(max_prmts_count))
 
 optDef = OptimalDefinition()  # объект содержащий оптимальное решение
 
-nl_indexes = np.zeros(ic.L, dtype=np.int)
-l_boost(-1, -1, nl_indexes, prmts_ql, X_lkq, optDef)
+nl_indexes = np.ones(ic.L, dtype=np.int)*-1
+l_boost(0, -1, nl_indexes, prmts_ql, X_lkq, optDef)
 
 # для 3 типов 4 кластеров и одного аэродрома
 # for q in range(ic.Q):
