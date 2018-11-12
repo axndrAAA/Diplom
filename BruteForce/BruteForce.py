@@ -1,14 +1,27 @@
 # Попытка решения задачи простым перебором
 import numpy as np
 import InitialConditions as ic
-import Measures as criteria
 from Permutations import Permutation
+from  OptimalDefinition import OptimalDefinition
 
 def printmatrix(x_lkq):
     for i in range(ic.Q):
         print("Аэродром № " + str(i))
         print(np.array(x_lkq[:, :, i]).transpose())
         print("\n")
+
+def l_boost(l, n, prmts_ql, X_lkq):
+    X_lkq[l, :, 0] = prmts_ql[0][l][l1]
+
+
+
+
+
+
+
+
+
+
 
 X_lkq = np.zeros((ic.L,ic.K,ic.Q))
 
@@ -32,31 +45,26 @@ for q in range(ic.Q):
 
 print('Макс. число перестановок: ' + str(max_prmts_count))
 
-cnt = 0
-# #для 3 типов 4 кластеров и одного аэродрома
-for q in range(ic.Q):
-    for l1 in range(len(prmts_ql[q][0])):
-        X_lkq[0, :, q] = prmts_ql[q][0][l1]
-        for l2 in range(len(prmts_ql[q][1])):
-            X_lkq[1, :, q] = prmts_ql[q][1][l2]
-            for l3 in range(len(prmts_ql[q][2])):
-                X_lkq[2, :, q] = prmts_ql[q][2][l3]
-                cnt += 1
-                # проверка выполнения ограничения по дальности
-                if not criteria.checkDistances(X_lkq):
-                    continue
-                # вычисление значения критерия
-                J = criteria.J(X_lkq)
-                if J > J_max:
-                    J_max = J
-                    X_lkq_optimal = X_lkq.copy()
-                    print('count = ' + str(cnt))
-                else:
-                    continue
 
-print("Значение критерия J = %f. Оптимальная матрица целераспределения:" % J_max)
 
-printmatrix(X_lkq_optimal)
+optDef = OptimalDefinition()#объект содержащий оптимальное решение
+
+#для 3 типов 4 кластеров и одного аэродрома
+# for q in range(ic.Q):
+q = 0
+for l1 in range(len(prmts_ql[q][0])):
+    X_lkq[0, :, q] = prmts_ql[q][0][l1]
+    for l2 in range(len(prmts_ql[q][1])):
+        X_lkq[1, :, q] = prmts_ql[q][1][l2]
+        for l3 in range(len(prmts_ql[q][2])):
+            X_lkq[2, :, q] = prmts_ql[q][2][l3]
+            optDef.checkMatrix(X_lkq)
+
+
+
+print("Значение критерия J = %f. Оптимальная матрица целераспределения:" % optDef.J_max)
+
+printmatrix(optDef.X_lkq_optimal)
 
 
 
