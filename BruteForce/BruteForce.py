@@ -2,31 +2,37 @@
 import numpy as np
 import InitialConditions as ic
 from Permutations import Permutation
-from  OptimalDefinition import OptimalDefinition
+from OptimalDefinition import OptimalDefinition
 
-def printmatrix(x_lkq):
+
+def print_matrix(x_lkq):
     for i in range(ic.Q):
         print("Аэродром № " + str(i))
         print(np.array(x_lkq[:, :, i]).transpose())
         print("\n")
 
-def l_boost(l, n, prmts_ql, X_lkq):
-    X_lkq[l, :, 0] = prmts_ql[0][l][l1]
 
+def l_boost(l, n, nl_indexes, prmts_ql, x_lkq, opt_def):
+    l += 1
+    if l == ic.L - 1:
+        #  дошли до края l измерения
+        for nl_indexes[l] in range(len(prmts_ql[0][l])):
+            X_lkq[l, :, 0] = prmts_ql[0][l][nl_indexes[l]]
+            opt_def.checkMatrix(x_lkq)
+        l = l - l
+        l_boost(l, n, nl_indexes, prmts_ql, x_lkq, opt_def)
+    else:
+        if nl_indexes[l] < len(prmts_ql[0][l]):
+            X_lkq[l, :, 0] = prmts_ql[0][l][nl_indexes[l]]
+            nl_indexes[l] += 1
+            l_boost(l, n, nl_indexes, prmts_ql, x_lkq, opt_def)
+    #  условие выхода
+    if nl_indexes[0] == len(prmts_ql[0][0]) - 1:
+        return
 
-
-
-
-
-
-
-
-
-
-X_lkq = np.zeros((ic.L,ic.K,ic.Q))
 
 J_max = -1000
-X_lkq_optimal = np.zeros((ic.L,ic.K,ic.Q))
+X_lkq = np.zeros((ic.L, ic.K, ic.Q))
 
 # Формируем возможные комбинации для каждого из аэродромов
 lim = ic.Q
@@ -45,26 +51,27 @@ for q in range(ic.Q):
 
 print('Макс. число перестановок: ' + str(max_prmts_count))
 
+optDef = OptimalDefinition()  # объект содержащий оптимальное решение
 
+nl_indexes = np.zeros(ic.L, dtype=np.int)
+l_boost(-1, -1, nl_indexes, prmts_ql, X_lkq, optDef)
 
-optDef = OptimalDefinition()#объект содержащий оптимальное решение
-
-#для 3 типов 4 кластеров и одного аэродрома
+# для 3 типов 4 кластеров и одного аэродрома
 # for q in range(ic.Q):
-q = 0
-for l1 in range(len(prmts_ql[q][0])):
-    X_lkq[0, :, q] = prmts_ql[q][0][l1]
-    for l2 in range(len(prmts_ql[q][1])):
-        X_lkq[1, :, q] = prmts_ql[q][1][l2]
-        for l3 in range(len(prmts_ql[q][2])):
-            X_lkq[2, :, q] = prmts_ql[q][2][l3]
-            optDef.checkMatrix(X_lkq)
+# q = 0
+# for l1 in range(len(prmts_ql[q][0])):
+#     X_lkq[0, :, q] = prmts_ql[q][0][l1]
+#     for l2 in range(len(prmts_ql[q][1])):
+#         X_lkq[1, :, q] = prmts_ql[q][1][l2]
+#         for l3 in range(len(prmts_ql[q][2])):
+#             X_lkq[2, :, q] = prmts_ql[q][2][l3]
+#             optDef.checkMatrix(X_lkq)
 
 
 
 print("Значение критерия J = %f. Оптимальная матрица целераспределения:" % optDef.J_max)
 
-printmatrix(optDef.X_lkq_optimal)
+print_matrix(optDef.X_lkq_optimal)
 
 
 
