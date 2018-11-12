@@ -41,8 +41,6 @@ for q in range(ic.Q):
             X_lkq[1, :, q] = prmts_ql[q][1][l2]
             for l3 in range(len(prmts_ql[q][2])):
                 X_lkq[2, :, q] = prmts_ql[q][2][l3]
-                if cnt == 10456:
-                    cnt = cnt
                 cnt += 1
                 # проверка выполнения ограничения по дальности
                 if not criteria.checkDistances(X_lkq):
