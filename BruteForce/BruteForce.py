@@ -11,8 +11,12 @@ def print_matrix(x_lkq):
         print(np.array(x_lkq[:, :, i]).transpose())
         print("\n")
 
+# def q_boost(g, nq_indexes, prmts_ql, x_lkq, opt_def):
 
-def l_boost(l, n, nl_indexes, prmts_ql, x_lkq, opt_def):
+
+
+
+def l_boost(l, nl_indexes, prmts_ql, x_lkq, opt_def):
     #  условие выхода
     if nl_indexes[0] == len(prmts_ql[0][0]):
         return
