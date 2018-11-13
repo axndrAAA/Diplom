@@ -109,19 +109,12 @@ optDef = OptimalDefinition()  # объект содержащий оптимал
 nl_indexes = np.zeros(ic.L, dtype=np.int)
 l = 0
 while True:
-    # зацикливание индекса
-    if l == ic.L:
-        l = 0
-
-    # условие выхода
-    if nl_indexes[0] == len(prmts_ql[0][0]):
-        break
-
-    #X_lkq[l, :, 0] = prmts_ql[0][l][nl_indexes[l]]
     if l == ic.L - 1:
         for nl_indexes[l] in range(len(prmts_ql[0][l])):
             X_lkq[l, :, 0] = prmts_ql[0][l][nl_indexes[l]]
             optDef.checkMatrix(X_lkq)
+        if nl_indexes[0] == 13:
+            l = l
         l -= 1
     else:
         if nl_indexes[l] < len(prmts_ql[0][l]):
@@ -133,22 +126,23 @@ while True:
             nl_indexes[l] = 0
             l -= 1
 
-    # nl_indexes[l] += 1
-    # l += 1
-    # for nl_indexes in range()
+    # условие выхода
+    if nl_indexes[0] == len(prmts_ql[0][0]):
+        break
+
 
 
 
 # для 3 типов 4 кластеров и одного аэродрома
 # for q in range(ic.Q):
 q = 0
-for l1 in range(len(prmts_ql[q][0])):
-    X_lkq[0, :, q] = prmts_ql[q][0][l1]
-    for l2 in range(len(prmts_ql[q][1])):
-        X_lkq[1, :, q] = prmts_ql[q][1][l2]
-        for l3 in range(len(prmts_ql[q][2])):
-            X_lkq[2, :, q] = prmts_ql[q][2][l3]
-            optDef.checkMatrix(X_lkq)
+# for l1 in range(len(prmts_ql[q][0])):
+#     X_lkq[0, :, q] = prmts_ql[q][0][l1]
+#     for l2 in range(len(prmts_ql[q][1])):
+#         X_lkq[1, :, q] = prmts_ql[q][1][l2]
+#         for l3 in range(len(prmts_ql[q][2])):
+#             X_lkq[2, :, q] = prmts_ql[q][2][l3]
+#             optDef.checkMatrix(X_lkq)
 
 
 
