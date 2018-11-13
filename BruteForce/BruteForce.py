@@ -24,13 +24,13 @@ def l_boost(l, nl_indexes, prmts_ql, x_lkq, opt_def):
     if l == ic.L - 1:
         #  дошли до края l измерения
         for nl_indexes[l] in range(len(prmts_ql[0][l])):
-            X_lkq[l, :, 0] = prmts_ql[0][l][nl_indexes[l]]
+            x_lkq[l, :, 0] = prmts_ql[0][l][nl_indexes[l]]
             opt_def.checkMatrix(x_lkq)
         l -= 1
         l_boost(l, nl_indexes, prmts_ql, x_lkq, opt_def)
     else:
         if nl_indexes[l] < len(prmts_ql[0][l]):
-            X_lkq[l, :, 0] = prmts_ql[0][l][nl_indexes[l]]
+            x_lkq[l, :, 0] = prmts_ql[0][l][nl_indexes[l]]
             nl_indexes[l] += 1
             l += 1
             l_boost(l, nl_indexes, prmts_ql, x_lkq, opt_def)
@@ -39,6 +39,33 @@ def l_boost(l, nl_indexes, prmts_ql, x_lkq, opt_def):
             l -= 1
             l_boost(l, nl_indexes, prmts_ql, x_lkq, opt_def)
 
+def ql_boost(l, q, nlq_indexes, prmts_ql, x_lkq, opt_def):
+    # условие выхода
+    if nlq_indexes[0][ic.Q - 1] == len(prmts_ql[ic.Q - 1][0]):
+        return
+
+    if l == ic.L - 1:
+        #  дошли до края l измерения, двигаемся по q измерениею
+        if q == ic.Q - 1:
+            # дошли до края q измерения
+            for nlq_indexes[l][q] in range(len(prmts_ql[q][l])):
+                x_lkq[l, :, q] = prmts_ql[q][l][nlq_indexes[l][q]]
+                opt_def.checkMatrix(x_lkq)
+            q -= 1
+            ql_boost(l, q, nlq_indexes, prmts_ql, x_lkq, optDef)
+        else:
+            if nlq_indexes[l][q] < len(prmts_ql[q][l]):
+                x_lkq[l, :, q] = prmts_ql[q][l][nlq_indexes[l][q]]
+                nlq_indexes[l][q] += 1
+                q += 1
+                ql_boost(l, q, nlq_indexes, prmts_ql, x_lkq, optDef)
+            else:
+                nlq_indexes[l][q] = 0
+                q -= 1
+                ql_boost(l, q, nlq_indexes, prmts_ql, x_lkq, optDef)
+    else:
+        #if nlq_indexes
+        return
 
 
 X_lkq = np.zeros((ic.L, ic.K, ic.Q))
@@ -47,7 +74,7 @@ X_lkq = np.zeros((ic.L, ic.K, ic.Q))
 lim = ic.Q
 prmts_ql = []
 max_prmts_count = 0
-for q in range(1):  # debug:  ic.Q
+for q in range(ic.Q):
     mq = []
     a = 1
     for l in range(ic.L):
@@ -62,9 +89,10 @@ print('Макс. число перестановок: ' + str(max_prmts_count))
 
 optDef = OptimalDefinition()  # объект содержащий оптимальное решение
 
-nl_indexes = np.ones(ic.L, dtype=np.int)*-1
-l_boost(0, nl_indexes, prmts_ql, X_lkq, optDef)
-
+# nl_indexes = np.zeros(ic.L, dtype=np.int)*-1
+# l_boost(0, nl_indexes, prmts_ql, X_lkq, optDef)
+nlq_indexes = np.zeros([ic.L,ic.Q], dtype=np.int)*(-1)
+ql_boost(2, 0, nlq_indexes, prmts_ql, X_lkq, optDef)
 i = 1
 # для 3 типов 4 кластеров и одного аэродрома
 # for q in range(ic.Q):
