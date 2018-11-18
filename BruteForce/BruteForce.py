@@ -113,6 +113,13 @@ for q in range(ic.Q):
 # теперь перебираем матрицы аэродромов
 matrixes = Permutation.permute(x_q)
 
+q=0
+
+for x in matrixes:
+    optDef.checkMatrix(x)
+
+q=0
+
 # nl_indexes = np.zeros(ic.L, dtype=np.int)*-1
 # l_boost(0, nl_indexes, prmts_ql, X_lkq, optDef)
 # nlq_indexes = np.zeros([ic.L,ic.Q], dtype=np.int)*(-1)
