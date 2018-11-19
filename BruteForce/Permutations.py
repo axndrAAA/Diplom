@@ -39,26 +39,27 @@ class Permutation:
         x = [0] * len(prmts_ln)
 
         l = 0
-        nl_indexes = np.zeros(len(prmts_ln), dtype=np.int)
-
+        nl_indexes = np.ones(len(prmts_ln), dtype=np.int)*-1
+        groups_cnt = len(prmts_ln)
         while True:
-            if l == ic.L - 1:
+            if l == groups_cnt - 1:
                 for nl_indexes[l] in range(len(prmts_ln[l])):
                     x[l] = prmts_ln[l][nl_indexes[l]]
                     ret.append(np.array(x))
+                    if nl_indexes[0] == 70:
+                        l=l
                 l -= 1
             else:
-                if nl_indexes[l] < len(prmts_ln[l]):
-                    x[l] = prmts_ln[l][nl_indexes[l]]
+                if nl_indexes[l] < len(prmts_ln[l])-1:
                     nl_indexes[l] += 1
+                    x[l] = prmts_ln[l][nl_indexes[l]]
                     l += 1
-
                 else:
-                    nl_indexes[l] = 0
+                    nl_indexes[l] = -1
                     l -= 1
 
             # условие выхода
-            if nl_indexes[0] == len(prmts_ln[0]):
+            if nl_indexes[0] == -1:  # nl_indexes[0] == len(prmts_ln[0]):
                 break
 
         return ret

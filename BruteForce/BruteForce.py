@@ -1,10 +1,8 @@
 # Попытка решения задачи простым перебором
 import numpy as np
-import InitialConditions as ic
+import SimpleInitialConditions as ic
 from Permutations import Permutation
 from OptimalDefinition import OptimalDefinition
-import sys as sys
-
 
 def print_matrix(x_lkq):
     for i in range(ic.Q):
@@ -35,57 +33,11 @@ def l_boost(l, nl_indexes, prmts_ql, x_lkq, opt_def):
             l -= 1
             l_boost(l, nl_indexes, prmts_ql, x_lkq, opt_def)
 
-def ql_boost(l, q, nlq_indexes, prmts_ql, x_lkq, opt_def):
-
-    # условие выхода
-    if nlq_indexes[0][ic.Q - 1] == len(prmts_ql[ic.Q - 1][0]):
-        return
-
-    if l == ic.L - 1:
-        #  дошли до края l измерения, двигаемся по q измерениею
-
-        # условие перехода к сдвигу в l - измерении
-        if nlq_indexes[ic.L - 1][0] == len(prmts_ql[0][ic.L - 1]):
-            l -= 1
-            q = 0
-            ql_boost(l, q, nlq_indexes, prmts_ql, x_lkq, optDef)
-
-        if q == ic.Q - 1:
-            # дошли до края q измерения
-            for nlq_indexes[l][q] in range(len(prmts_ql[q][l])):
-                x_lkq[l, :, q] = prmts_ql[q][l][nlq_indexes[l][q]]
-                opt_def.checkMatrix(x_lkq)
-            q -= 1
-            ql_boost(l, q, nlq_indexes, prmts_ql, x_lkq, optDef)
-        else:
-            if nlq_indexes[l][q] < len(prmts_ql[q][l]):
-                x_lkq[l, :, q] = prmts_ql[q][l][nlq_indexes[l][q]]
-                nlq_indexes[l][q] += 1
-                q += 1
-                ql_boost(l, q, nlq_indexes, prmts_ql, x_lkq, optDef)
-            else:
-                nlq_indexes[l][q] = 0
-                q -= 1
-                ql_boost(l, q, nlq_indexes, prmts_ql, x_lkq, optDef)
-    else:
-        if nlq_indexes[l][q] < len(prmts_ql[q][l]):
-            x_lkq[l, :, q] = prmts_ql[q][l][nlq_indexes[l][q]]
-            nlq_indexes[l][q] += 1
-            l += 1
-            ql_boost(l, q, nlq_indexes, prmts_ql, x_lkq, optDef)
-        else:
-            nlq_indexes[l][q] = 0
-            l -= 1
-            ql_boost(l, q, nlq_indexes, prmts_ql, x_lkq, optDef)
-
-
 X_lkq = np.zeros((ic.L, ic.K, ic.Q))
-
-# sys.setrecursionlimit(50000)
 
 # Формируем возможные комбинации для каждого из аэродромов
 prmts_ql = []
-max_prmts_count = 0
+max_prmts_count = 1
 for q in range(ic.Q):
     mq = []
     a = 1
@@ -94,7 +46,7 @@ for q in range(ic.Q):
         m = p.getAll()
         a *= len(m)
         mq.append(m)
-    max_prmts_count += a
+    max_prmts_count *= a
     prmts_ql.append(mq)
 
 print('Макс. число перестановок: ' + str(max_prmts_count))
