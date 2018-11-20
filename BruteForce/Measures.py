@@ -1,4 +1,4 @@
-import SimpleInitialConditions as ic
+import SuperSimpleInitialConditions as ic
 import math as m
 
 
@@ -42,9 +42,6 @@ def J3(x_lkq):
         return sum
 
 def J(x_lkq):
-    # return ic.alpha[0] * J1(x_lkq)
-    # return ic.alpha[1] * J2(x_lkq)
-    # return  ic.alpha[2]*J3(x_lkq)
     return ic.alpha[0]*J1(x_lkq) - ic.alpha[1]*J2(x_lkq) + ic.alpha[2]*J3(x_lkq)
 
 def getDzitta_qkl(q, k, l):
@@ -69,8 +66,6 @@ def checkDistances(x_lkq):
             for k in range(ic.K):
                 if x_lkq[q, l, k] > 0:
                     d_kq = m.sqrt(m.pow(ic.X_k[k].x - ic.X_q[q].x, 2) + m.pow(ic.X_k[k].y - ic.X_q[q].y, 2))
-                    if l == 1:
-                        l=l
                     if d_kq > ic.R_l[l]:
                         return False
     return True

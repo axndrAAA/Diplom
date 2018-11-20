@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
-import SimpleInitialConditions as ic
+import matplotlib.patches as mpatches
+import SuperSimpleInitialConditions as ic
 
 class Plot:
 
@@ -24,6 +25,8 @@ class Plot:
         plt.ylim(-100000, 190000)
         plt.ion()
         plt.show()
+        plt.pause(0.001)
+
 
     def drawPoints(self, points, subscribt, point_property, offset = 10):
         for q in range(len(points)):
@@ -35,4 +38,3 @@ class Plot:
         circle = plt.Circle((x, y), radius, color=color, fill=False)
         ax = plt.gca()
         ax.add_artist(circle)
-

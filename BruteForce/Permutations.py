@@ -7,6 +7,8 @@ class Permutation:
     def __init__(self,size, Sum):
         self.sum_condition = Sum
         parameter = list(range(Sum+1));
+        lst1 = list(it.combinations_with_replacement(parameter, size))
+        lst2 = list(it.product(parameter, repeat=size))
         # self.lst = list(it.combinations_with_replacement(parameter, size))
         self.lst = list(it.product(parameter, repeat=size))
     def getNext(self):
@@ -21,9 +23,9 @@ class Permutation:
         ret = []
         while True:
             arr = self.getNext()
-            if(not arr.any()):
-               break
             ret.append(arr);
+            if (not arr.any()):
+                break
         return ret
 
     @staticmethod

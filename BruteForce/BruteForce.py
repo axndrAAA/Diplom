@@ -1,42 +1,17 @@
 # Попытка решения задачи простым перебором
-import numpy as np
-import SimpleInitialConditions as ic
+import SuperSimpleInitialConditions as ic
 from Permutations import Permutation
 from OptimalDefinition import OptimalDefinition
 from Plot import Plot
 
 def print_matrix(x_lkq):
-    for i in range(ic.Q):
-        print("Аэродром № " + str(i))
-        print(np.array(x_lkq[:, :, i]).transpose())
-        print("\n")
-
-def l_boost(l, nl_indexes, prmts_ql, x_lkq, opt_def):
-    #  условие выхода
-    if nl_indexes[0] == len(prmts_ql[0][0]):
-        return
-
-    if l == ic.L - 1:
-        #  дошли до края l измерения
-        for nl_indexes[l] in range(len(prmts_ql[0][l])):
-            x_lkq[l, :, 0] = prmts_ql[0][l][nl_indexes[l]]
-            opt_def.checkMatrix(x_lkq)
-        l -= 1
-        l_boost(l, nl_indexes, prmts_ql, x_lkq, opt_def)
-    else:
-        if nl_indexes[l] < len(prmts_ql[0][l]):
-            x_lkq[l, :, 0] = prmts_ql[0][l][nl_indexes[l]]
-            nl_indexes[l] += 1
-            l += 1
-            l_boost(l, nl_indexes, prmts_ql, x_lkq, opt_def)
-        else:
-            nl_indexes[l] = 0
-            l -= 1
-            l_boost(l, nl_indexes, prmts_ql, x_lkq, opt_def)
-
-X_lkq = np.zeros((ic.L, ic.K, ic.Q))
-
-
+    for q in range(ic.Q):
+        print("Аэр. " + str(q+1))
+        for k in range(ic.K):
+            for l in range(ic.L):
+                print(str(x_lkq[q][l][k]) + ' ', end='')
+            print()
+        print()
 
 # Формируем возможные комбинации для каждого из аэродромов
 prmts_ql = []
@@ -75,52 +50,6 @@ q=0
 
 for x in matrixes:
     optDef.checkMatrix(x)
-
-q=0
-
-# nl_indexes = np.zeros(ic.L, dtype=np.int)*-1
-# l_boost(0, nl_indexes, prmts_ql, X_lkq, optDef)
-# nlq_indexes = np.zeros([ic.L,ic.Q], dtype=np.int)*(-1)
-# ql_boost(0, 0, nlq_indexes, prmts_ql, X_lkq, optDef)
-# nl_indexes = np.zeros(ic.L, dtype=np.int)
-# l = 0
-# while True:
-#     if l == ic.L - 1:
-#         for nl_indexes[l] in range(len(prmts_ql[0][l])):
-#             X_lkq[l, :, 0] = prmts_ql[0][l][nl_indexes[l]]
-#             optDef.checkMatrix(X_lkq)
-#         if nl_indexes[0] == 13:
-#             l = l
-#         l -= 1
-#     else:
-#         if nl_indexes[l] < len(prmts_ql[0][l]):
-#             X_lkq[l, :, 0] = prmts_ql[0][l][nl_indexes[l]]
-#             nl_indexes[l] += 1
-#             l += 1
-#
-#         else:
-#             nl_indexes[l] = 0
-#             l -= 1
-#
-#     # условие выхода
-#     if nl_indexes[0] == len(prmts_ql[0][0]):
-#         break
-#
-
-
-
-# для 3 типов 4 кластеров и одного аэродрома
-# for q in range(ic.Q):
-q = 0
-# for l1 in range(len(prmts_ql[q][0])):
-#     X_lkq[0, :, q] = prmts_ql[q][0][l1]
-#     for l2 in range(len(prmts_ql[q][1])):
-#         X_lkq[1, :, q] = prmts_ql[q][1][l2]
-#         for l3 in range(len(prmts_ql[q][2])):
-#             X_lkq[2, :, q] = prmts_ql[q][2][l3]
-#             optDef.checkMatrix(X_lkq)
-
-
 
 print("Значение критерия J = %f. Оптимальная матрица целераспределения:" % optDef.J_max)
 
