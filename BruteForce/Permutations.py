@@ -1,7 +1,6 @@
 #класс будет выдавать все возможные комбинации последовательностей чисел, для которых сумма не будет превышать заданного числа
 import  numpy as np
 import itertools as it
-import InitialConditions as ic
 class Permutation:
     sum_condition = 0
     lst = 0

@@ -3,6 +3,7 @@ import numpy as np
 import SimpleInitialConditions as ic
 from Permutations import Permutation
 from OptimalDefinition import OptimalDefinition
+from Plot import Plot
 
 def print_matrix(x_lkq):
     for i in range(ic.Q):
@@ -35,6 +36,8 @@ def l_boost(l, nl_indexes, prmts_ql, x_lkq, opt_def):
 
 X_lkq = np.zeros((ic.L, ic.K, ic.Q))
 
+
+
 # Формируем возможные комбинации для каждого из аэродромов
 prmts_ql = []
 max_prmts_count = 1
@@ -64,6 +67,9 @@ for q in range(ic.Q):
 
 # теперь перебираем матрицы аэродромов
 matrixes = Permutation.permute(x_q)
+
+plot = Plot()
+plot.plotIC()
 
 q=0
 
@@ -120,5 +126,6 @@ print("Значение критерия J = %f. Оптимальная матр
 
 print_matrix(optDef.X_lkq_optimal)
 
+input("Press [enter] to continue.")
 
 

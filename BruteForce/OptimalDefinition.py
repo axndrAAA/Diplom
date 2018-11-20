@@ -1,6 +1,6 @@
 import  numpy as np
 import Measures as criteria
-import InitialConditions as ic
+import SimpleInitialConditions as ic
 
 class OptimalDefinition:
     J_max = -1000
@@ -15,8 +15,8 @@ class OptimalDefinition:
         self.counter += 1
 
         # проверка выполнения ограничения по дальности
-        if not criteria.checkDistances(X_lkq):
-            return
+        # if not criteria.checkDistances(X_lkq):
+        #     return
         # вычисление значения критерия
         J = criteria.J(X_lkq)
         if J > self.J_max:

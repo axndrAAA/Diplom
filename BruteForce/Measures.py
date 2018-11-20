@@ -1,14 +1,14 @@
-import InitialConditions as ic
+import SimpleInitialConditions as ic
 import math as m
 
 
 def J1(x_lkq):
     m = 1
     sum = 0
-    for k in range(ic.K):
+    for q in range(ic.Q):
         for l in range(ic.L):
-            for q in range(ic.Q):
-                m *= ((1 - ic.ro_lk[l,k])**x_lkq[l,k,q])
+            for k in range(ic.K):
+                m *= ((1 - ic.ro_lk[l,k])**x_lkq[q, l, k])
 
         sum += ic.c_k[k]*(1 - m)/ic.c_k.max()
     return sum/ic.K
@@ -16,10 +16,10 @@ def J1(x_lkq):
 
 def J2(x_lkq):
     d_sum = 0.0
-    for k in range(ic.K):
+    for q in range(ic.Q):
         for l in range(ic.L):
-            for q in range(ic.Q):
-                d_sum += ic.p_l[l] * ic.r_lk[l,k]*x_lkq[l,k,q]/ic.p_l.max()
+            for k in range(ic.K):
+                d_sum += ic.p_l[l] * ic.r_lk[l, k]*x_lkq[q, l, k]/ic.p_l.max()
     sm = x_lkq.sum()
     if (sm > 0):
         return d_sum/sm
@@ -29,10 +29,11 @@ def J2(x_lkq):
 
 def J3(x_lkq):
     sum = 0
-    for k in range(ic.K):
+
+    for q in range(ic.Q):
         for l in range(ic.L):
-            for q in range(ic.Q):
-                sum += x_lkq[l,k,q]*getDzitta_qkl(q,k,l)/(ic.T_k[k].t_max - ic.T_k[k].t_min)
+            for k in range(ic.K):
+                sum += x_lkq[q, l, k]*getDzitta_qkl(q, k, l)/(ic.T_k[k].t_max - ic.T_k[k].t_min)
 
     sm = x_lkq.sum()
     if (sm > 0):
@@ -46,10 +47,10 @@ def J(x_lkq):
     # return  ic.alpha[2]*J3(x_lkq)
     return ic.alpha[0]*J1(x_lkq) - ic.alpha[1]*J2(x_lkq) + ic.alpha[2]*J3(x_lkq)
 
-def getDzitta_qkl(q,k,l):
-    d_qk = getD_qk(q,k)
-    ret =  0.5*((d_qk/ic.V_l[l].v_min - d_qk/ic.V_l[l].v_max) + (ic.T_k[k].t_max - ic.T_k[k].t_min)
-                - m.fabs(ic.T_k[k].t_min -  d_qk/ic.V_l[l].v_max)-m.fabs(ic.T_k[k].t_max -  d_qk/ic.V_l[l].v_min))
+def getDzitta_qkl(q, k, l):
+    d_qk = getD_qk(q, k)
+    ret = 0.5*((d_qk/ic.V_l[l].v_min - d_qk/ic.V_l[l].v_max) + (ic.T_k[k].t_max - ic.T_k[k].t_min)
+                - m.fabs(ic.T_k[k].t_min - d_qk/ic.V_l[l].v_max) - m.fabs(ic.T_k[k].t_max - d_qk/ic.V_l[l].v_min))
     return ret
 
 def getD_qk(q,k):
@@ -63,11 +64,13 @@ def checkDistances(l,q,k):
         return True
 
 def checkDistances(x_lkq):
-    for l in range(ic.L):
-        for k in range(ic.K):
-            for q in range(ic.Q):
-                if(x_lkq[l,k,q] > 0):
+    for q in range(ic.Q):
+        for l in range(ic.L):
+            for k in range(ic.K):
+                if x_lkq[q, l, k] > 0:
                     d_kq = m.sqrt(m.pow(ic.X_k[k].x - ic.X_q[q].x, 2) + m.pow(ic.X_k[k].y - ic.X_q[q].y, 2))
-                    if (d_kq > ic.R_l[l]):
+                    if l == 1:
+                        l=l
+                    if d_kq > ic.R_l[l]:
                         return False
     return True
