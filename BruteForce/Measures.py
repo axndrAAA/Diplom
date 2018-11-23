@@ -1,6 +1,5 @@
-import SuperSimpleInitialConditions as ic
+import SimpleInitialConditions as ic
 import math as m
-
 
 def J1(x_lkq):
     m = 1
@@ -53,7 +52,8 @@ def getDzitta_qkl(q, k, l):
 def getD_qk(q,k):
     return m.sqrt(m.pow((ic.X_q[q].x - ic.X_k[k].x),2) + m.pow((ic.X_q[q].y - ic.X_k[k].y),2))
 
-def checkDistances(l,q,k):
+
+def checkDistance(l, q, k):
     d_kq = m.sqrt(m.pow(ic.X_k[k].x - ic.X_q[q].x, 2)+m.pow(ic.X_k[k].y - ic.X_q[q].y, 2))
     if(d_kq > ic.R_l[l]):
         return False
@@ -69,3 +69,16 @@ def checkDistances(x_lkq):
                     if d_kq > ic.R_l[l]:
                         return False
     return True
+
+def checkDistanceConstraint(q, l, m):
+    ret = []
+    for n in range(len(m)):
+        flag = True
+        for k in range(len(m[n])):
+            if m[n][k] > 0:
+                if not checkDistance(l, q, k):
+                    flag = False
+                    break
+        if flag:
+            ret.append(m[n])
+    return ret

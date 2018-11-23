@@ -1,6 +1,5 @@
 import matplotlib.pyplot as plt
-import matplotlib.patches as mpatches
-import SuperSimpleInitialConditions as ic
+from Measures import *
 
 class Plot:
 

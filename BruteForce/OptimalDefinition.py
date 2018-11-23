@@ -1,6 +1,6 @@
 import  numpy as np
-import Measures as criteria
-import SuperSimpleInitialConditions as ic
+import Measures as measures
+from Measures import *
 
 class OptimalDefinition:
     J_max = -1000
@@ -15,10 +15,10 @@ class OptimalDefinition:
         self.counter += 1
 
         # проверка выполнения ограничения по дальности
-        if not criteria.checkDistances(X_lkq):
-            return
+        # if not criteria.checkDistances(X_lkq):
+        #     return
         # вычисление значения критерия
-        J = criteria.J(X_lkq)
+        J = measures.J(X_lkq)
         if J > self.J_max:
             self.J_max = J
             self.X_lkq_optimal = X_lkq.copy()

@@ -1,8 +1,9 @@
 # Попытка решения задачи простым перебором
-import SuperSimpleInitialConditions as ic
 from Permutations import Permutation
 from OptimalDefinition import OptimalDefinition
 from Plot import Plot
+from datetime import datetime
+from Measures import *
 
 def print_matrix(x_lkq):
     for q in range(ic.Q):
@@ -13,6 +14,9 @@ def print_matrix(x_lkq):
             print()
         print()
 
+# засекаем время
+start_time = datetime.now()
+
 # Формируем возможные комбинации для каждого из аэродромов
 prmts_ql = []
 max_prmts_count = 1
@@ -21,7 +25,8 @@ for q in range(ic.Q):
     a = 1
     for l in range(ic.L):
         p = Permutation(ic.K, ic.A_ql[q, l])
-        m = p.getAll()
+        m0 = p.getAll()
+        m = checkDistanceConstraint(q, l, m0)
         a *= len(m)
         mq.append(m)
     max_prmts_count *= a
@@ -54,6 +59,8 @@ for x in matrixes:
 print("Значение критерия J = %f. Оптимальная матрица целераспределения:" % optDef.J_max)
 
 print_matrix(optDef.X_lkq_optimal)
+
+print('Затрачено времени: {}'.format(datetime.now() - start_time))
 
 input("Press [enter] to continue.")
 
