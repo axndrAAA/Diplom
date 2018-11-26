@@ -53,15 +53,15 @@ plot.plotIC()
 
 q=0
 
-for x in matrixes:
-    optDef.checkMatrix(x)
+for i in range(len(matrixes)):
+    optDef.checkMatrix(matrixes[i])
 
 print("Значение критерия J = %f. Оптимальная матрица целераспределения:" % optDef.J_max)
 
-print_matrix(optDef.X_lkq_optimal)
+print_matrix(optDef.X_qlk_optimal)
 
 print('Затрачено времени: {}'.format(datetime.now() - start_time))
 
-input("Press [enter] to continue.")
+input("Press [enter] to pay respect.")
 
 
