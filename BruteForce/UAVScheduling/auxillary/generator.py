@@ -1,7 +1,7 @@
 import numpy as np
 
-from dwta import models
-from dwta.state import Position2D
+from UAVScheduling.models import models
+from UAVScheduling.auxillary.state import Position2D
 
 
 class Generator(object):
@@ -22,26 +22,26 @@ class Generator(object):
         y = self._random.uniform(min_y, max_y)
         return Position2D(x, y)
 
-    def agent(self, **params):
+    def airport(self, **params):
         position = self.position()
-        return models.AutonomousUAV(position, **params)
+        return models.Airport(position, **params)
 
     def target_value(self, min, max):
         if min < 0:
             min = 0
         return self._random.uniform(min, max)
 
-    def target(self, value, random=False, **kwargs):
+    def targetCluster(self, value, random=False, **kwargs):
         if random:
             value = self.target_value(0, value)
         position = self.position()
-        return models.Target(position, value=value)
+        return models.TargetCluster(position, value=value)
 
     def many(self, _type, num, *args, **kwargs):
-        if _type == 'agent':
-            method = self.agent
-        elif _type == 'target':
-            method = self.target
+        if _type == 'airport':
+            method = self.airport
+        elif _type == 'targetCluster':
+            method = self.targetCluster
         elif _type in ['pos', 'position']:
             method = self.position
         else:
