@@ -1,7 +1,7 @@
 import abc
 import logging
 
-import pulp
+
 import numpy as np
 from PySide2.QtCore import QObject, Signal
 
@@ -71,7 +71,7 @@ class Object(QObject):
     """Entity that interacts with the ``World`` and other ``Objects``.
 
     Attributes:
-        in_world_id: id number in the ``World`` where this ``Actor`` were
+        in_world_id: id number in the ``World`` where this ``Object`` were
             assigned.
     """
 
@@ -81,7 +81,7 @@ class Object(QObject):
         """
 
         Args:
-            position (Position): Initial position of ``Actor``.
+            position (Position): Initial position of ``Object``.
         """
         super().__init__(parent)
         self._position = position or Position2D(0, 0)
@@ -135,12 +135,12 @@ class Object(QObject):
         """Alias for ``in_world_id``."""
         return self.in_world_id
 
-    def get_distance_to(self, actor):
-        return get_distance(self.position, actor.position)
+    def get_distance_to(self, object):
+        return get_distance(self.position, object.position)
 
     @abc.abstractmethod
     def update_state(self):
-        """Updates state of ``Actor`` according to changes in ``World``."""
+        """Updates state of ``Object`` according to changes in ``World``."""
         LOG.debug(f'Updating state for {self.full_name}')
 
 class Airport(Object):
