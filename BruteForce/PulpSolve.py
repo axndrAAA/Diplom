@@ -16,7 +16,7 @@ N = ic.A_ql.max()
 v = LpVariable.dicts("vals", (range(ic.Q), range(ic.L), range(ic.K), \
                              range(N)), lowBound=0, upBound=1, cat=LpInteger)
 
-# define penalty function for timing target function
+# define penalty function for timing targetCluster function
 penalties = {}
 for q in range(ic.Q):
     for l in range(ic.L):
@@ -55,7 +55,7 @@ for q in range(ic.Q):
 
 
 # 3 - non negative is condition is met automatically
-# 4 - range condition must be determined as target function
+# 4 - range condition must be determined as targetCluster function
 
 
 # save problem

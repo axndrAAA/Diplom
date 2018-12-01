@@ -40,7 +40,7 @@ class TargetsModel(QAbstractTableModel):
         # see: https://stackoverflow.com/a/30776237/10380652
         row = len(self.targets)
         self.beginInsertRows(QModelIndex(), row, row)
-        # self.targets.append(target)
+        # self.targets.append(targetCluster)
         self.endInsertRows()
 
     def remove_target(self, target):
@@ -50,7 +50,7 @@ class TargetsModel(QAbstractTableModel):
         # see: https://stackoverflow.com/a/30776237/10380652
         row = len(self.targets)
         self.beginRemoveRows(QModelIndex(), row, row)
-        # self.targets.append(target)
+        # self.targets.append(targetCluster)
         self.endRemoveRows()
 
     @property

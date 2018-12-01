@@ -191,7 +191,7 @@ class MainWindow(TemplateBaseClass):
         self._targets_to_generate = value
 
     def remove_all_agents(self):
-        self._experiment.world.remove(self._experiment.agents)
+        self._experiment.world.remove(self._experiment.airports)
 
     def remove_all_targets(self):
         self._experiment.world.remove(self._experiment.targets)
@@ -205,7 +205,7 @@ class MainWindow(TemplateBaseClass):
         self._experiment.shuffle_actors('agent')
 
     def shuffle_target_positions(self):
-        self._experiment.shuffle_actors('target')
+        self._experiment.shuffle_actors('targetCluster')
 
     def shuffle_all_positions(self):
         self._experiment.shuffle_actors('all')
@@ -278,10 +278,10 @@ class MainWindow(TemplateBaseClass):
     # NOTE: this could be hidden in subclass on CanvasPlot
     def plot_identify_probability_distribution(self):
 
-        # NOTE: we assume, that all agents are the same, thus we pick first
+        # NOTE: we assume, that all airports are the same, thus we pick first
         #  of them as a reference
-        if self._experiment.agents:
-            agent = self._experiment.agents[0]
+        if self._experiment.airports:
+            agent = self._experiment.airports[0]
         else:
             # create stub agent
             # NOTE: not optimal at all!

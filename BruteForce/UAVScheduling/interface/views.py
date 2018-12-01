@@ -240,7 +240,7 @@ class TargetView(ActorView):
 
     @property
     def _name(self):
-        return 'target'
+        return 'targetCluster'
 
     @staticmethod
     def _pick_color():
