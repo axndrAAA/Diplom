@@ -4,7 +4,7 @@ from PySide2.QtWidgets import QApplication
 from PySide2.QtCore import QRectF, Qt, QCoreApplication
 
 from UAVScheduling.interface.main_window import MainWindow
-# from UAVScheduling.experiment import Experiment
+ from UAVScheduling.experiment import Experiment
 from UAVScheduling.experiment.world import World, WorldArea
 
 logging.basicConfig(level=logging.INFO)
