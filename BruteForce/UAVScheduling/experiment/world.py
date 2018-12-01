@@ -2,7 +2,7 @@ import logging
 
 from PySide2.QtCore import QObject, Signal, QRectF
 
-from dwta.models import Actor
+from UAVScheduling.models.models import Object
 
 
 LOG = logging.getLogger(__name__)
@@ -85,102 +85,102 @@ class World(QObject):
 
     # TODO: add parameter to temporally disable call to update
 
-    sigActorAdded = Signal(Actor)
-    sigActorRemoved = Signal(Actor)
+    sigObjectAdded = Signal(Object)
+    sigObjectRemoved = Signal(Object)
 
-    def __init__(self, actors=None, area=None, parent=None):
+    def __init__(self, objects=None, area=None, parent=None):
         """
 
         Args:
-            actors:
+            objects:
             area (WorldArea):
         """
         super().__init__(parent)
 
-        self._actors = set()
-        self._actors_index = 0
+        self._objects = set()
+        self._objects_index = 0
 
-        self._area = area
+        self._objects = area
 
         self.wait_updates = True
 
-        if actors:
-            self.add(actors)
+        if objects:
+            self.add(objects)
 
         LOG.info(f'Created World with area {self._area.area} and'
-                 f' {len(self._actors)} actors')
+                 f' {len(self._objects)} objects')
 
     def __repr__(self):
-        actors = ', '.join(str(actor) for actor in self.actors)
-        return f'World:\n\tActors: {actors}'
+        objects = ', '.join(str(object) for object in self.objects)
+        return f'World:\n\tObjects: {objects}'
 
-    def _assign_index(self, actor):
-        actor.in_world_id = self._actors_index
-        self._actors_index += 1
+    def _assign_index(self, object):
+        object.in_world_id = self._objects_index
+        self._objects_index += 1
 
     @property
-    def actors(self):
-        return self._actors
+    def objects(self):
+        return self._objects
 
     @property
     def area(self):
         return self._area
 
-    def add(self, actors_array):
-        LOG.info(f'Adding {len(actors_array)} actors')
-        [self.add_actor(actor, with_update=False) for actor in actors_array]
+    def add(self, objects_array):
+        LOG.info(f'Adding {len(objects_array)} objects')
+        [self.add_object(object, with_update=False) for object in objects_array]
         self.update()
 
-    def add_actor(self, actor, with_update=True):
-        if not isinstance(actor, Actor):
-            raise WorldError('Only instances of Actor can be added '
+    def add_object(self, object, with_update=True):
+        if not isinstance(object, Object):
+            raise WorldError('Only instances of Object can be added '
                              'to the World')
-        actor.world = self
-        self.actors.add(actor)
-        self._assign_index(actor)
+        object.world = self
+        self.objects.add(object)
+        self._assign_index(object)
 
-        LOG.debug(f'Added new actor: {actor}')
+        LOG.debug(f'Added new object: {object}')
 
-        # for consistency, we update states of all actors in World on changes
-        #  in Actor's state (position)
-        actor.sigPositionUpdate.connect(self.update)
+        # for consistency, we update states of all objects in World on changes
+        #  in Object's state (position)
+        object.sigPositionUpdate.connect(self.update)
 
         if with_update:
             self.update()
 
-        self.sigActorAdded.emit(actor)
+        self.sigObjectAdded.emit(object)
 
-    def remove(self, actors_array):
-        LOG.info(f'Removing {len(actors_array)} actors')
-        [self.remove_actor(actor, with_update=False) for actor in actors_array]
+    def remove(self, objects_array):
+        LOG.info(f'Removing {len(objects_array)} objects')
+        [self.remove_object(object, with_update=False) for object in objects_array]
         self.update()
 
-    def remove_actor(self, actor, with_update=True):
+    def remove_object(self, object, with_update=True):
         try:
-            LOG.debug(f'Removing {actor}')
+            LOG.debug(f'Removing {objects}')
 
-            self._actors.remove(actor)
-            actor.world = None
+            self._objects.remove(object)
+            object.world = None
 
             if with_update:
                 self.update()
 
-            self.sigActorRemoved.emit(actor)
+            self.sigObjectRemoved.emit(object)
         except ValueError:
-            raise WorldError('Actor not found in this World')
+            raise WorldError('Object not found in this World')
 
     def clear(self):
-        for actor in self._actors:
-            self.remove_actor(actor, with_update=False)
+        for object in self._objects:
+            self.remove_object(object, with_update=False)
 
-    def get_actors(self, actor_type):
-        """Returns all actors of concrete type"""
+    def get_objects(self, object_type):
+        """Returns all objects of concrete type"""
         # TODO: can add str argument support
-        return [actor for actor in self._actors
-                if isinstance(actor, actor_type)]
+        return [object for object in self._objects
+                if isinstance(object, object_type)]
 
     def update(self):
         LOG.debug('World update started')
-        for actor in self.actors:
-            actor.update_state()
+        for object in self.objects:
+            object.update_state()
         LOG.debug('World update finished')
