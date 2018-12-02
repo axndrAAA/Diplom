@@ -2,12 +2,13 @@ import logging
 
 import numpy as np
 
-from UAVScheduling.experiment import Experiment
-from dwta.models import CircleArea, AutonomousUAV
-from dwta.state import Position2D
-from dwta.interface.graphics_scene import MyScene
-from dwta.interface.models import TargetsModel
-from dwta.interface.utils import loadUiType
+from UAVScheduling.experiment.experiment import Experiment
+from UAVScheduling.models.models import CircleArea
+from UAVScheduling.auxillary.state import Position2D
+
+from UAVScheduling.interface.graphics_scene import MyScene
+from UAVScheduling.interface.models import TargetsModel
+from UAVScheduling.interface.utils import loadUiType
 
 
 LOG = logging.getLogger(__name__)
@@ -30,8 +31,8 @@ class MainWindow(TemplateBaseClass):
         super().__init__(*args, **kwargs)
 
         self._experiment = experiment
-        self._agents_to_generate = 5
-        self._targets_to_generate = 10
+        self._airports_to_generate = 5
+        self._target_clusters_to_generate = 10
 
         self.ui = WindowTemplate()
         self.ui.setupUi(self)
@@ -72,11 +73,11 @@ class MainWindow(TemplateBaseClass):
         # actors
         max_agents_to_generate = 100
         self.ui.agentsToGenerateSpinBox.setMaximum(max_agents_to_generate)
-        self.ui.agentsToGenerateSpinBox.setValue(self._agents_to_generate)
+        self.ui.agentsToGenerateSpinBox.setValue(self._airports_to_generate)
 
         max_targets_to_generate = 500
         self.ui.targetsToGenerateSpinBox.setMaximum(max_targets_to_generate)
-        self.ui.targetsToGenerateSpinBox.setValue(self._targets_to_generate)
+        self.ui.targetsToGenerateSpinBox.setValue(self._target_clusters_to_generate)
 
         self.update_selected_actor()
 
@@ -179,16 +180,16 @@ class MainWindow(TemplateBaseClass):
 
     # slots
     def generate_agents(self):
-        self._experiment.add_agents(self._agents_to_generate)
+        self._experiment.add_agents(self._airports_to_generate)
 
     def generate_targets(self):
-        self._experiment.add_targets(self._targets_to_generate)
+        self._experiment.add_targets(self._target_clusters_to_generate)
 
     def set_agents_to_generate(self, value):
-        self._agents_to_generate = value
+        self._airports_to_generate = value
 
     def set_targets_to_generate(self, value):
-        self._targets_to_generate = value
+        self._target_clusters_to_generate = value
 
     def remove_all_agents(self):
         self._experiment.world.remove(self._experiment.airports)
